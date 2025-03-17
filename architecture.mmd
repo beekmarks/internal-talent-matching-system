@@ -1,0 +1,26 @@
+graph TD
+    A[User Interface] -->|Input Requirements| B[Chat Bot]
+    B -->|Process Input| C[Local LLM]
+    C -->|Extracted Information| D[Data Integration Layer]
+    D -->|Fetch Data| E[Data Sources]
+    E -->|Return Data| D
+    D -->|Clean and Format Data| F[Context Manager]
+    F -->|Embed Data| C
+    C -->|Generate Response| G[Recommendation Engine]
+    G -->|Profiles and Suggestions| H[User Interface]
+ 
+    subgraph Data Sources
+        I[Workday]
+        J[Fuel50]
+        K[LinkedIn]
+        L[SumTotal]
+        M[Degreed]
+        N[Recognition Central]
+    end
+ 
+    D --> I
+    D --> J
+    D --> K
+    D --> L
+    D --> M
+    D --> N
