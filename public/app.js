@@ -16,6 +16,22 @@ document.addEventListener('DOMContentLoaded', function() {
   const positionsLink = document.getElementById('positions-link');
   const employeesLink = document.getElementById('employees-link');
 
+  // Configure marked.js options
+  marked.setOptions({
+    renderer: new marked.Renderer(),
+    highlight: function(code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+      return hljs.highlight(code, { language }).value;
+    },
+    langPrefix: 'hljs language-',
+    pedantic: false,
+    gfm: true,
+    breaks: true,
+    sanitize: false,
+    smartypants: false,
+    xhtml: false
+  });
+
   // Event Listeners
   sendButton.addEventListener('click', sendMessage);
   chatInput.addEventListener('keypress', function(e) {
@@ -47,8 +63,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Clear input
     chatInput.value = '';
 
-    // Show loading indicator
-    addMessageToChat('system', 'Processing your request...');
+    // Show initial loading message
+    const loadingMessageId = addMessageToChat('system', 'Processing your request...', false);
+    
+    // Start showing staged loading messages
+    showStagedLoadingMessages(loadingMessageId);
 
     // Send to backend
     fetch('/api/chat/process', {
@@ -61,10 +80,13 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(response => response.json())
     .then(data => {
       // Remove loading message
-      chatMessages.removeChild(chatMessages.lastChild);
+      const loadingMessage = document.getElementById(loadingMessageId);
+      if (loadingMessage) {
+        chatMessages.removeChild(loadingMessage);
+      }
       
       // Add response to chat
-      addMessageToChat('system', 'Here are the matching employees based on your requirements:');
+      addMessageToChat('system', 'Here are the matching employees based on your requirements:', false);
       
       // Display results
       displayResults(data);
@@ -72,32 +94,146 @@ document.addEventListener('DOMContentLoaded', function() {
     .catch(error => {
       console.error('Error:', error);
       // Remove loading message
-      chatMessages.removeChild(chatMessages.lastChild);
+      const loadingMessage = document.getElementById(loadingMessageId);
+      if (loadingMessage) {
+        chatMessages.removeChild(loadingMessage);
+      }
       addMessageToChat('system', 'Sorry, there was an error processing your request. Please try again.');
     });
+  }
+
+  /**
+   * Show staged loading messages to inform the user about the processing steps
+   * @param {string} messageId - The ID of the loading message element
+   */
+  function showStagedLoadingMessages(messageId) {
+    const loadingStages = [
+      {
+        message: "Analyzing your requirements...",
+        delay: 2000
+      },
+      {
+        message: "Extracting key skills and qualifications...",
+        delay: 4000
+      },
+      {
+        message: "Searching for matching employees in the database...",
+        delay: 6000
+      },
+      {
+        message: "Evaluating employee skills and experience...",
+        delay: 8000
+      },
+      {
+        message: "Analyzing team dynamics and project fit...",
+        delay: 10000
+      },
+      {
+        message: "Considering business unit knowledge and expertise...",
+        delay: 12000
+      },
+      {
+        message: "Evaluating employee availability and location...",
+        delay: 14000
+      },
+      {
+        message: "Forming team recommendations based on your requirements...",
+        delay: 16000
+      },
+      {
+        message: "Preparing detailed reasoning and explanations...",
+        delay: 18000
+      },
+      {
+        message: "Almost there! Finalizing recommendations...",
+        delay: 20000
+      }
+    ];
+    
+    let currentStage = 0;
+    const loadingElement = document.getElementById(messageId);
+    
+    if (!loadingElement) return;
+    
+    // Add loading class for animation
+    loadingElement.classList.add('loading');
+    
+    const contentDiv = loadingElement.querySelector('.message-content');
+    if (!contentDiv) return;
+    
+    // Add a progress indicator
+    const progressContainer = document.createElement('div');
+    progressContainer.className = 'progress-container';
+    contentDiv.appendChild(progressContainer);
+    
+    // Update the loading message with the current stage
+    function updateLoadingMessage() {
+      if (currentStage < loadingStages.length) {
+        const stage = loadingStages[currentStage];
+        contentDiv.innerHTML = `<p>${stage.message}</p>`;
+        
+        // Add progress indicator
+        const progressContainer = document.createElement('div');
+        progressContainer.className = 'progress-container';
+        
+        const progress = document.createElement('div');
+        progress.className = 'progress';
+        progress.style.width = `${(currentStage + 1) / loadingStages.length * 100}%`;
+        
+        progressContainer.appendChild(progress);
+        contentDiv.appendChild(progressContainer);
+        
+        currentStage++;
+        
+        // Schedule the next update
+        setTimeout(updateLoadingMessage, stage.delay);
+      }
+    }
+    
+    // Start updating the loading message
+    updateLoadingMessage();
   }
 
   /**
    * Add a message to the chat
    * @param {string} sender - 'user' or 'system'
    * @param {string} content - Message content
+   * @param {boolean} parseMarkdown - Whether to parse the content as markdown (default: true)
+   * @returns {string} The ID of the message element
    */
-  function addMessageToChat(sender, content) {
+  function addMessageToChat(sender, content, parseMarkdown = true) {
+    const messageId = 'msg-' + Date.now();
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
+    messageDiv.id = messageId;
     
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
     
-    const paragraph = document.createElement('p');
-    paragraph.textContent = content;
+    if (parseMarkdown && sender === 'system') {
+      // Parse markdown for system messages
+      contentDiv.innerHTML = marked.parse(content);
+    } else {
+      // Regular text for user messages
+      const paragraph = document.createElement('p');
+      paragraph.textContent = content;
+      contentDiv.appendChild(paragraph);
+    }
     
-    contentDiv.appendChild(paragraph);
     messageDiv.appendChild(contentDiv);
     chatMessages.appendChild(messageDiv);
     
+    // Apply syntax highlighting to code blocks
+    if (parseMarkdown && sender === 'system') {
+      document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+    
     // Scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    return messageId;
   }
 
   /**
@@ -110,8 +246,13 @@ document.addEventListener('DOMContentLoaded', function() {
     positionsContainer.style.display = 'none';
     employeesDirectory.style.display = 'none';
     
-    // Display reasoning
-    reasoningContainer.innerHTML = `<p>${data.reasoning}</p>`;
+    // Display reasoning with markdown formatting
+    reasoningContainer.innerHTML = marked.parse(data.reasoning);
+    
+    // Apply syntax highlighting to code blocks
+    document.querySelectorAll('#reasoning-container pre code').forEach((block) => {
+      hljs.highlightElement(block);
+    });
     
     // Display matching employees
     matchingEmployees.innerHTML = '';

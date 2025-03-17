@@ -78,6 +78,47 @@ body {
   max-width: 70%;
   padding: 10px 15px;
   border-radius: 10px;
+  line-height: 1.5;
+}
+
+.message-content p {
+  margin-bottom: 0.75rem;
+}
+
+.message-content p:last-child {
+  margin-bottom: 0;
+}
+
+.message-content ul, 
+.message-content ol {
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+}
+
+.message-content li {
+  margin-bottom: 0.3rem;
+}
+
+.message-content code {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.message-content pre {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.75rem;
+  border-radius: 5px;
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+}
+
+.message-content pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
 }
 
 .message.system .message-content {
@@ -86,6 +127,12 @@ body {
 
 .message.user .message-content {
   background-color: var(--primary-color);
+  color: white;
+}
+
+.message.user .message-content code,
+.message.user .message-content pre {
+  background-color: rgba(255, 255, 255, 0.2);
   color: white;
 }
 
@@ -188,6 +235,166 @@ body {
 
 .position-body {
   padding: 15px;
+}
+
+/* Markdown Content Styling */
+.markdown-content {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.markdown-content h1, 
+.markdown-content h2, 
+.markdown-content h3, 
+.markdown-content h4, 
+.markdown-content h5, 
+.markdown-content h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.markdown-content h1 { font-size: 1.8rem; }
+.markdown-content h2 { font-size: 1.6rem; }
+.markdown-content h3 { font-size: 1.4rem; }
+.markdown-content h4 { font-size: 1.2rem; }
+.markdown-content h5 { font-size: 1.1rem; }
+.markdown-content h6 { font-size: 1rem; }
+
+.markdown-content p {
+  margin-bottom: 1rem;
+}
+
+.markdown-content ul, 
+.markdown-content ol {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+.markdown-content li {
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid var(--primary-color);
+  padding-left: 1rem;
+  margin-left: 0;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.markdown-content code {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #f1f1f1;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.markdown-content pre {
+  background-color: #f1f1f1;
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.markdown-content table th,
+.markdown-content table td {
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+}
+
+.markdown-content table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.markdown-content a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1rem auto;
+  border-radius: 5px;
+}
+
+.markdown-content hr {
+  border: 0;
+  border-top: 1px solid #dee2e6;
+  margin: 1.5rem 0;
+}
+
+/* Progress Indicator */
+.progress-container {
+  width: 100%;
+  height: 6px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: 3px;
+  transition: width 0.5s ease-in-out;
+}
+
+.message.system .progress-container {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.message.system .progress {
+  background-color: var(--primary-color);
+}
+
+.message.user .progress-container {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.message.user .progress {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Loading message animation */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.message.system .message-content p {
+  animation: none;
+}
+
+.message.system.loading .message-content p {
+  animation: pulse 1.5s infinite;
 }
 
 /* Responsive adjustments */

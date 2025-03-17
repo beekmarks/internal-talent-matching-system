@@ -230,6 +230,16 @@ export class RecommendationService {
         4. Team dynamics and how the recommended team would work together
         5. Availability and location considerations
         
+        FORMAT YOUR RESPONSE USING MARKDOWN:
+        - Use ## headings for main sections
+        - Use ### for subsections
+        - Use **bold** for employee names and important skills
+        - Use *italics* for emphasis
+        - Use bullet points for lists of skills or qualifications
+        - Use numbered lists for priority or sequential information
+        - Use tables where appropriate to compare employees
+        - Use code blocks for any technical details or requirements
+        
         Format your response as if you are speaking directly to the manager who made the request.
         Be conversational but professional. Highlight 2-3 key employees that are particularly good matches.
         If there are employees from mature projects who could be reallocated, specifically mention this.

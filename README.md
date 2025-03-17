@@ -110,12 +110,13 @@ wit-hackathon/
 
 ## Key Features
 
-- **Natural Language Interface**: Describe requirements in plain English
-- **Skill-Based Matching**: Matches employees to tasks based on hard and soft skills
-- **Team Formation**: Recommends optimal team compositions
-- **Business Unit Knowledge**: Considers employees' familiarity with specific business units
-- **Project Context Analysis**: Analyzes project requirements to determine the best fit
-- **Comprehensive Logging System**: Detailed logging of all LLM interactions for debugging and optimization
+- **Natural Language Interface**: Describe hiring needs in plain language
+- **Skill-Based Matching**: Find employees with matching hard and soft skills
+- **Team Formation**: Generate optimal team compositions for projects
+- **Business Unit Knowledge**: Consider domain expertise in recommendations
+- **Comprehensive Logging**: Detailed logging of all LLM interactions for debugging and optimization
+- **Rich Markdown Formatting**: Enhanced readability of responses with formatted headings, lists, tables, and emphasis
+- **Staged Loading Indicators**: Real-time feedback during processing showing each step of the recommendation workflow
 
 ## Hackathon Extension Points
 

@@ -306,6 +306,58 @@ The current UI is basic and can be replaced or enhanced. Integration points:
 - `src/public/js/main.js` → Client-side JavaScript
 - `src/routes/chat.ts` → API endpoints that the UI interacts with
 
+## User Interface
+
+The user interface is built with HTML, CSS, and vanilla JavaScript. It provides a clean, intuitive experience for HR representatives and managers to interact with the system.
+
+### Chat Interface
+
+The chat interface allows users to describe their requirements in natural language. The system processes these requests and provides recommendations based on the available employee data.
+
+#### Key Features
+
+- **Conversational UI**: Simple chat-based interface for describing requirements
+- **Markdown Formatting**: Rich text formatting for system responses including:
+  - Headings for different sections
+  - Bold and italic text for emphasis
+  - Bulleted and numbered lists for organized information
+  - Code blocks with syntax highlighting for technical details
+  - Tables for comparing employee attributes
+- **Staged Loading Indicator**: Provides real-time feedback during processing with:
+  - Sequential progress updates that explain each stage of the workflow
+  - Visual progress bar that fills up as the system progresses
+  - Subtle animation to indicate active processing
+  - Clear messaging that reflects the actual steps in the application architecture
+
+#### Loading Stages
+
+The staged loading indicator shows the following progression:
+1. Analyzing requirements
+2. Extracting skills and qualifications
+3. Searching the employee database
+4. Evaluating skills and experience
+5. Analyzing team dynamics
+6. Considering business unit knowledge
+7. Evaluating availability and location
+8. Forming team recommendations
+9. Preparing detailed reasoning
+
+### Results Display
+
+The results are displayed in a clean, organized format that makes it easy to understand the recommendations:
+
+- **Reasoning Section**: Detailed explanation of the matching logic in markdown format
+- **Employee Cards**: Visual representation of matching employees with their skills and attributes
+- **Match Scores**: Visual indicators of how well each employee matches the requirements
+
+### Navigation
+
+The application provides simple navigation between different views:
+
+- **Dashboard**: The main chat interface
+- **Open Positions**: List of available positions
+- **Employee Directory**: Browse all employees in the system
+
 ## Known Issues and Solutions
 
 ### Issue 1: Skill Matching Based on IDs
