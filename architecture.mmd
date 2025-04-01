@@ -1,10 +1,10 @@
 graph TD
-    A[User Interface] -->|Input Requirements| B[Chat Bot]
-    B -->|Process Input| C[Local LLM]
-    C -->|Extracted Information| D[Data Integration Layer]
+    A[User Interface - ECHIP] -->|Input Requirements| C[LLM - Amazon Bedrock]
+    C -->|Extracted Information| D[Data Integration Layer - AWS Glue]
     D -->|Fetch Data| E[Data Sources]
     E -->|Return Data| D
-    D -->|Clean and Format Data| F[Context Manager]
+    D -->|Process & Transform| O[Data Aggregation Layer - Snowflake]
+    O -->|Retrieve Aggregated Data| F[Context Manager - Amazon OpenSearch]
     F -->|Embed Data| C
     C -->|Generate Response| G[Recommendation Engine]
     G -->|Profiles and Suggestions| H[User Interface]
@@ -18,9 +18,33 @@ graph TD
         N[Recognition Central]
     end
  
-    D --> I
-    D --> J
-    D --> K
-    D --> L
-    D --> M
-    D --> N
+    subgraph Data Aggregation Layer - Snowflake
+        P[Snowflake Warehouse]
+        Q[Snowflake Compute]
+        R[Snowflake Storage]
+        S[Snowpipe]
+    end
+ 
+    I -->|Employee Data| D
+    J -->|Career Path Data| D
+    K -->|Skills & Experience| D
+    L -->|Training Data| D
+    M -->|Learning Data| D
+    N -->|Recognition Data| D
+    
+    D -->|Cleaned Employee Data| P
+    D -->|Normalized Skills Data| P
+    D -->|Structured Career Data| Q
+    D -->|Unified Training Records| R
+    
+    P -->|Structured Data| S
+    Q -->|Computed Metrics| S
+    R -->|Stored Documents| S
+    S -->|Aggregated Data Sets| O
+    
+    subgraph Supporting Services
+        T[API Gateway]
+        U[AWS Lambda]
+        V[Azure AD]
+        W[Amazon CloudWatch]
+    end

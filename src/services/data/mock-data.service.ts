@@ -5,6 +5,7 @@ import { Experience } from '../../models/experience.model';
 import { License } from '../../models/license.model';
 import { Assessment } from '../../models/assessment.model';
 import { mockEmployees } from '../../data/mock-employees';
+import { additionalMockEmployees } from '../../data/additional-mock-employees';
 import { mockTasks } from '../../data/mock-tasks';
 import { mockLicenses } from '../../data/mock-licenses';
 import { mockExperiences } from '../../data/mock-experiences';
@@ -21,7 +22,7 @@ import { mockAssessments } from '../../data/mock-assessments';
  * - Recognition Central: Peer validations, achievements
  */
 export class MockDataService {
-  private employees: Employee[] = mockEmployees;
+  private employees: Employee[] = [...mockEmployees, ...additionalMockEmployees];
   private tasks: Task[] = mockTasks;
   private licenses: License[] = mockLicenses;
   private experiences: Experience[] = mockExperiences;
